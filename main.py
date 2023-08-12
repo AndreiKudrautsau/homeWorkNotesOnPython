@@ -1,3 +1,11 @@
+# Напишите проект, содержащий функционал работы с заметками. 
+# Программа должна уметь:
+#  создавать заметку, 
+#  сохранять её, 
+#  читать список заметок, 
+#  редактировать заметку, 
+#  удалять заметку.
+
 class Note:
     def __init__(self, title, content):
         self.title = title
@@ -7,14 +15,12 @@ class Note:
         with open('notes.txt', 'a') as file:
             file.write(f'{self.title}:{self.content}|')
 
-    @staticmethod
     def read_notes():
         with open('notes.txt', 'r') as file:
             notes = file.read().split('|')[:-1]
         return [Note(title.strip(), content.strip()) for (title, content) in 
                 (note.split(':', 1) for note in notes)]
     
-    @staticmethod
     def edit_note(title, new_content):
         with open('notes.txt', 'r') as file:
             notes = file.read().split('|')[:-1]
@@ -30,7 +36,6 @@ class Note:
             file.write('|'.join(edit_note) + '|')
 
 
-    @staticmethod
     def delete_note(title):
         with open('notes.txt', 'r') as file:
             notes = file.read().split('|')[:-1]
@@ -44,21 +49,18 @@ class Note:
         with open('notes.txt', 'w') as file:
             file.write('|'.join(residue_notes) + '|')
     
-    @staticmethod
     def clear_note(notes):
         with open('notes.txt', 'r') as file:
-            notes = file.read().split('---')[:-1]
+            notes = file.read().split('|')[:-1]
         
         residue_notes = []
         for note in notes:
-            t_title, _ = note.split('n', 1)
+            t_title, _ = note.split(':', 1)
             if t_title.strip() != title.strip():
                 residue_notes.append(note.strip())
         
         with open('notes.txt', 'w') as file:
-            file.write('n---n'.join(residue_notes) + 'n---n')
-
-
+            file.write('|'.join(residue_notes) + '|')
 
 if __name__ == '__main__':
     while True:
@@ -103,3 +105,4 @@ if __name__ == '__main__':
 
         else:
             print('Неверный выбор.')
+
